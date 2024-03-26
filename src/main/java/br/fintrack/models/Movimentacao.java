@@ -4,7 +4,7 @@ import java.util.Date;
 import java.util.Objects;
 
 public class Movimentacao {
-    private Short id;
+    private Short movimentaçaoId;
     private Short userId;
     private Date moveDate;
     private Short value;
@@ -15,7 +15,7 @@ public class Movimentacao {
     }
 
     public Movimentacao(Short id, Short userId, Date moveDate, Short value, String classe, String status) {
-        this.id = id;
+        this.movimentaçaoId = id;
         this.userId = userId;
         this.moveDate = moveDate;
         this.value = value;
@@ -23,12 +23,12 @@ public class Movimentacao {
         this.status = status;
     }
 
-    public Short getId() {
-        return id;
+    public Short getMovimentaçaoId() {
+        return movimentaçaoId;
     }
 
-    public void setId(Short id) {
-        this.id = id;
+    public void setMovimentaçaoId(Short movimentaçaoId) {
+        this.movimentaçaoId = movimentaçaoId;
     }
 
     public Short getUserId() {
@@ -76,18 +76,18 @@ public class Movimentacao {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Movimentacao that = (Movimentacao) o;
-        return Objects.equals(id, that.id) && Objects.equals(userId, that.userId) && Objects.equals(moveDate, that.moveDate) && Objects.equals(value, that.value) && Objects.equals(classe, that.classe) && Objects.equals(status, that.status);
+        return Objects.equals(movimentaçaoId, that.movimentaçaoId) && Objects.equals(userId, that.userId) && Objects.equals(moveDate, that.moveDate) && Objects.equals(value, that.value) && Objects.equals(classe, that.classe) && Objects.equals(status, that.status);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, userId, moveDate, value, classe, status);
+        return Objects.hash(movimentaçaoId, userId, moveDate, value, classe, status);
     }
 
     @Override
     public String toString() {
         return "Movimentacao{" +
-                "id=" + id +
+                "id=" + movimentaçaoId +
                 ", userId=" + userId +
                 ", moveDate=" + moveDate +
                 ", value=" + value +
