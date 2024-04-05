@@ -2,21 +2,39 @@ package br.fintrack.models;
 
 import java.util.Date;
 import java.util.Objects;
+import javax.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Short id;
+    @Column(name = "email", nullable = false)
     private String email;
-    private String name;
-    private Date birthDate;
+    @Column(name = "nome", nullable = false)
+    private String nome;
+    @Column(name = "dataNascimento", nullable = false)
+    private Date dataNascimento;
+
+    @Column(name = "senha", nullable = false)
+    private String senha;
 
     public User() {
     }
 
-    public User(Short id, String email, String name, Date birthDate) {
+    public User(Short id, String email, String nome, Date dataNascimento) {
         this.id = id;
         this.email = email;
-        this.name = name;
-        this.birthDate = birthDate;
+        this.nome = nome;
+        this.dataNascimento = dataNascimento;
     }
 
     public Short getId() {
@@ -35,20 +53,28 @@ public class User {
         this.email = email;
     }
 
-    public String getName() {
-        return name;
+    public String getnome() {
+        return nome;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setnome(String nome) {
+        this.nome = nome;
     }
 
-    public Date getBirthDate() {
-        return birthDate;
+    public Date getdataNascimento() {
+        return dataNascimento;
     }
 
-    public void setBirthDate(Date birthDate) {
-        this.birthDate = birthDate;
+    public void setdataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
+    }
+
+    public String getSenha(){
+        return senha;
+    }
+
+    public void setSenha(String senha){
+        this.senha = senha;
     }
 
     @Override
@@ -56,12 +82,12 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(name, user.name) && Objects.equals(birthDate, user.birthDate);
+        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(nome, user.nome) && Objects.equals(dataNascimento, user.dataNascimento) && Objects.equals(senha, user.senha);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, name, birthDate);
+        return Objects.hash(id, email, nome, dataNascimento);
     }
 
     @Override
@@ -69,8 +95,9 @@ public class User {
         return "User{" +
                 "id=" + id +
                 ", email='" + email + '\'' +
-                ", name='" + name + '\'' +
-                ", birthDate=" + birthDate +
+                ", nome='" + nome + '\'' +
+                ", dataNascimento=" + dataNascimento +
+                ", senha=" + senha +
                 '}';
     }
 }
