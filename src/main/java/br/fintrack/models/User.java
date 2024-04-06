@@ -16,7 +16,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Short id;
+    private Short idUsuario;
     @Column(name = "email", nullable = false)
     private String email;
     @Column(name = "nome", nullable = false)
@@ -30,19 +30,19 @@ public class User {
     public User() {
     }
 
-    public User(Short id, String email, String nome, Date dataNascimento) {
-        this.id = id;
+    public User(Short idUsuario, String email, String nome, Date dataNascimento) {
+        this.idUsuario = idUsuario;
         this.email = email;
         this.nome = nome;
         this.dataNascimento = dataNascimento;
     }
 
     public Short getId() {
-        return id;
+        return idUsuario;
     }
 
-    public void setId(Short id) {
-        this.id = id;
+    public void setId(Short idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public String getEmail() {
@@ -82,18 +82,18 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) && Objects.equals(email, user.email) && Objects.equals(nome, user.nome) && Objects.equals(dataNascimento, user.dataNascimento) && Objects.equals(senha, user.senha);
+        return Objects.equals(idUsuario, user.idUsuario) && Objects.equals(email, user.email) && Objects.equals(nome, user.nome) && Objects.equals(dataNascimento, user.dataNascimento) && Objects.equals(senha, user.senha);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, email, nome, dataNascimento);
+        return Objects.hash(idUsuario, email, nome, dataNascimento);
     }
 
     @Override
     public String toString() {
         return "User{" +
-                "id=" + id +
+                "idUsuario=" + idUsuario +
                 ", email='" + email + '\'' +
                 ", nome='" + nome + '\'' +
                 ", dataNascimento=" + dataNascimento +

@@ -2,57 +2,71 @@ package br.fintrack.models;
 
 import java.util.Date;
 import java.util.Objects;
+import javax.persistence.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+@Entity
+@Table(name = "movimentacao")
 public class Movimentacao {
-    private Short movimentaçaoId;
-    private Short userId;
-    private Date moveDate;
-    private Short value;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Short movimentacaoId;
+
+    @OneToOne
+    @JoinColumn(name = "idUsuario", nullable = false)
+    User idUsuario;
+
+    @Column(name = "dataMovimentacao", nullable = false)
+    private Date data_movimentacao;
+
+    @Column(name = "valorMovimentacao", nullable = false)
+    private Float valor;
+
+    @Column(name = "classe", nullable = false)
     private String classe;
+
+    @Column(name = "status", nullable = false)
     private String status;
 
     public Movimentacao() {
     }
 
-    public Movimentacao(Short id, Short userId, Date moveDate, Short value, String classe, String status) {
-        this.movimentaçaoId = id;
-        this.userId = userId;
-        this.moveDate = moveDate;
-        this.value = value;
+    public Movimentacao(Short movimentacaoId, Date dataMovimentacao, Float valor, String classe, String status) {
+        this.movimentacaoId = movimentacaoId;
+        this.data_movimentacao = dataMovimentacao;
+        this.valor = valor;
         this.classe = classe;
         this.status = status;
     }
 
-    public Short getMovimentaçaoId() {
-        return movimentaçaoId;
+    public Short getMovimentacaoId() {
+        return movimentacaoId;
     }
 
-    public void setMovimentaçaoId(Short movimentaçaoId) {
-        this.movimentaçaoId = movimentaçaoId;
+    public void setMovimentacaoId(Short movimentacaoId) {
+        this.movimentacaoId = movimentacaoId;
     }
 
-    public Short getUserId() {
-        return userId;
+    public Date getDataMovimentacao() {
+        return data_movimentacao;
     }
 
-    public void setUserId(Short userId) {
-        this.userId = userId;
+    public void setDataMovimentacao(Date data_movimentacao) {
+        this.data_movimentacao = data_movimentacao;
     }
 
-    public Date getMoveDate() {
-        return moveDate;
+    public Float getValor() {
+        return valor;
     }
 
-    public void setMoveDate(Date moveDate) {
-        this.moveDate = moveDate;
-    }
-
-    public Short getValue() {
-        return value;
-    }
-
-    public void setValue(Short value) {
-        this.value = value;
+    public void setValor(Float valor) {
+        this.valor = valor;
     }
 
     public String getClasse() {
@@ -69,30 +83,5 @@ public class Movimentacao {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Movimentacao that = (Movimentacao) o;
-        return Objects.equals(movimentaçaoId, that.movimentaçaoId) && Objects.equals(userId, that.userId) && Objects.equals(moveDate, that.moveDate) && Objects.equals(value, that.value) && Objects.equals(classe, that.classe) && Objects.equals(status, that.status);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(movimentaçaoId, userId, moveDate, value, classe, status);
-    }
-
-    @Override
-    public String toString() {
-        return "Movimentacao{" +
-                "id=" + movimentaçaoId +
-                ", userId=" + userId +
-                ", moveDate=" + moveDate +
-                ", value=" + value +
-                ", classe='" + classe + '\'' +
-                ", status='" + status + '\'' +
-                '}';
     }
 }
