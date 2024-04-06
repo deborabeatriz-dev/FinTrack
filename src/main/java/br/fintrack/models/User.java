@@ -73,7 +73,7 @@ public class User {
         return senha;
     }
 
-    public void setSenha(String senha){
+    public void setSenhate(String senha){
         this.senha = senha;
     }
 
