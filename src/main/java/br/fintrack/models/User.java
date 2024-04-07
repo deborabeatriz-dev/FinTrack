@@ -53,19 +53,19 @@ public class User {
         this.email = email;
     }
 
-    public String getnome() {
+    public String getNome() {
         return nome;
     }
 
-    public void setnome(String nome) {
+    public void setNome(String nome) {
         this.nome = nome;
     }
 
-    public Date getdataNascimento() {
+    public Date getDataNascimento() {
         return dataNascimento;
     }
 
-    public void setdataNascimento(Date dataNascimento) {
+    public void setDataNascimento(Date dataNascimento) {
         this.dataNascimento = dataNascimento;
     }
 
@@ -73,7 +73,7 @@ public class User {
         return senha;
     }
 
-    public void setSenhate(String senha){
+    public void setSenha(String senha){
         this.senha = senha;
     }
 
