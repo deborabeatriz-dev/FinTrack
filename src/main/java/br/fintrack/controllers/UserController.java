@@ -1,8 +1,9 @@
 package br.fintrack.controllers;
 
-import br.fintrack.exception.ResourceNotFoundException;
+import br.fintrack.exception.*;
 import br.fintrack.models.User;
 import br.fintrack.repositories.UserRepository;
+import org.springframework.http.HttpStatus;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -42,11 +43,12 @@ public class UserController {
    * Cria um novo usuário
    */
   @PostMapping("/users")
-  public User createUser(@Valid @RequestBody User user) {
+  @ResponseStatus(value = HttpStatus.CREATED)
+  public User createUser(@Valid @RequestBody User user) throws InternalServerErrorException {
     try {
       return userRepository.save(user);
     } catch (Exception e) {
-      return null;
+      throw new InternalServerErrorException("Falha ao criar usuário.");
     }
   }
 
