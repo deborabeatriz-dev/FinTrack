@@ -49,6 +49,7 @@ public class UserController {
       return userRepository.save(user);
     } catch (Exception e) {
       throw new InternalServerErrorException("Falha ao criar usuário.");
+
     }
   }
 
