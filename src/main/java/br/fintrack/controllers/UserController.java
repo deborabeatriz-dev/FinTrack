@@ -44,12 +44,11 @@ public class UserController {
    */
   @PostMapping("/users")
   @ResponseStatus(value = HttpStatus.CREATED)
-  public User createUser(@Valid @RequestBody User user) throws InternalServerErrorException{
+  public User createUser(@Valid @RequestBody User user) throws InternalServerErrorException {
     try {
       return userRepository.save(user);
     } catch (Exception e) {
       throw new InternalServerErrorException("Falha ao criar usuário.");
-
     }
   }
 
