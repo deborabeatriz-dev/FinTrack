@@ -19,6 +19,7 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("br.fintrack.controllers")) // Specify the package where your controllers are located
                 .paths(PathSelectors.any())
                 .build()
+                .useDefaultResponseMessages(false)
                 .apiInfo(apiInfo());
     }
 

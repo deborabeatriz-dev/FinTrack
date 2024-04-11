@@ -4,6 +4,7 @@ import br.fintrack.exception.*;
 import br.fintrack.models.User;
 import br.fintrack.repositories.UserRepository;
 import org.springframework.http.HttpStatus;
+import io.swagger.annotations.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +26,10 @@ public class UserController {
   /*
    * Lista todos os usuários
    */
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Lista de usuários retornada com sucesso")
+  })
+  @ApiOperation(value = "Lista todos os usuários", notes = "Recupera uma lista de todos os usuários cadastrados")
   @GetMapping("/users")
   public List<User> listUsers() {
     return userRepository.findAll();
@@ -33,6 +38,11 @@ public class UserController {
   /*
    * Lista um usuário específico pelo Id
    */
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Usuário encontrado"),
+      @ApiResponse(code = 404, message = "Usuário não encontrado")
+  })
+  @ApiOperation(value = "Lista um usuário específico pelo ID", notes = "Recupera as informações de um usuário com base no seu ID")
   @GetMapping("/users/{idUsuario}")
   public User listUserById(@PathVariable(value = "idUsuario") short idUsuario) throws ResourceNotFoundException {
     return userRepository.findById(idUsuario)
@@ -42,6 +52,11 @@ public class UserController {
   /*
    * Cria um novo usuário
    */
+  @ApiResponses(value = {
+      @ApiResponse(code = 201, message = "Usuário criado com sucesso"),
+      @ApiResponse(code = 500, message = "Erro interno do servidor")
+  })
+  @ApiOperation(value = "Cria um novo usuário", notes = "Cria um novo usuário com base nos detalhes fornecidos")
   @PostMapping("/users")
   @ResponseStatus(value = HttpStatus.CREATED)
   public User createUser(@Valid @RequestBody User user) throws InternalServerErrorException {
@@ -55,6 +70,13 @@ public class UserController {
   /*
    * Atualiza um usuário
    */
+  @ApiOperation(value = "Atualiza um usuário existente", notes = "Atualiza as informações de um usuário com base no seu ID")
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Usuário atualizado com sucesso"),
+      @ApiResponse(code = 400, message = "Requisição inválida"),
+      @ApiResponse(code = 404, message = "Usuário não encontrado"),
+      @ApiResponse(code = 500, message = "Erro interno do servidor")
+  })
   @PutMapping("/users/{idUsuario}")
   public ResponseEntity<User> updateUser(@PathVariable(value = "idUsuario") short idUsuario,
       @Valid @RequestBody User userDetails) throws ResourceNotFoundException {
@@ -78,16 +100,17 @@ public class UserController {
   /*
    * Deleta um usuário
    */
+  @ApiResponses(value = {
+      @ApiResponse(code = 200, message = "Usuário deletado com sucesso"),
+      @ApiResponse(code = 404, message = "Usuário não encontrado para exclusão")
+  })
+  @ApiOperation(value = "Deleta um usuário", notes = "Deleta um usuário com base no seu ID")
   @DeleteMapping("/users/{idUsuario}")
-  public Map<String, Boolean> deleteUser(@PathVariable(value = "idUsuario") short idUsuario) {
+  public Map<String, Boolean> deleteUser(@PathVariable(value = "idUsuario") short idUsuario) throws ResourceNotFoundException {
     try {
       userRepository.deleteById(idUsuario);
     } catch (Exception e) {
-      Map<String, Boolean> response = new HashMap<>();
-
-      response.put("deleted", Boolean.FALSE);
-      response.put("error", Boolean.TRUE);
-      return response;
+      throw new ResourceNotFoundException("Usuário não encontrado para exclusão");
     }
     Map<String, Boolean> response = new HashMap<>();
     response.put("deleted", Boolean.TRUE);
