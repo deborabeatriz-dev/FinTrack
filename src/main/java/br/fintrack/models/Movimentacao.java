@@ -1,17 +1,11 @@
 package br.fintrack.models;
 
 import java.util.Date;
-import java.util.Objects;
 import javax.persistence.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
-import io.swagger.annotations.ApiModelProperty;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.data.annotation.CreatedBy;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "movimentacao")
@@ -19,8 +13,6 @@ public class Movimentacao {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Short movimentacaoId;
-    @Column(name = "idUsuario", nullable = false)
-    private short idUsuario;
 
     @Column(name = "dataMovimentacao", nullable = false)
     private Date data_movimentacao;
@@ -28,8 +20,14 @@ public class Movimentacao {
     @Column(name = "valorMovimentacao", nullable = false)
     private Float valor;
 
-    @Column(name = "classe", nullable = false)
-    private String classe;
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "idUsuario", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnore
+    private User usuario;
+    
+    @Transient
+    Short idUsuario;
 
     @Column(name = "status", nullable = false)
     private String status;
@@ -37,12 +35,30 @@ public class Movimentacao {
     public Movimentacao() {
     }
 
-    public Movimentacao(Short movimentacaoId, Date dataMovimentacao, Float valor, String classe, String status) {
+    public Movimentacao(Short movimentacaoId, Date dataMovimentacao, Float valor, Short idClassificacao, Short idUsuario, User usuario,
+            String status) {
         this.movimentacaoId = movimentacaoId;
         this.data_movimentacao = dataMovimentacao;
+        this.idUsuario = idUsuario;
+        this.usuario = usuario;
         this.valor = valor;
-        this.classe = classe;
         this.status = status;
+    }
+
+    public User getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(User usuario) {
+        this.usuario = usuario;
+    }
+
+    public Short getIdUsuario() {
+        return idUsuario.shortValue();
+    }
+
+    public void setIdUsuario(Short idUsuario) {
+        this.idUsuario = idUsuario;
     }
 
     public Short getMovimentacaoId() {
@@ -52,11 +68,6 @@ public class Movimentacao {
     public void setMovimentacaoId(Short movimentacaoId) {
         this.movimentacaoId = movimentacaoId;
     }
-
-    public short getIdUsuario() {return idUsuario;}
-
-    public void setIdUsuario(short idUsuario) {this.idUsuario = idUsuario;}
-
 
     public Date getDataMovimentacao() {
         return data_movimentacao;
@@ -74,44 +85,11 @@ public class Movimentacao {
         this.valor = valor;
     }
 
-    public String getClasse() {
-        return classe;
-    }
-
-    public void setClasse(String classe) {
-        this.classe = classe;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Movimentacao that = (Movimentacao) o;
-        return idUsuario == that.idUsuario && Objects.equals(movimentacaoId, that.movimentacaoId) && Objects.equals(data_movimentacao, that.data_movimentacao) && Objects.equals(valor, that.valor) && Objects.equals(classe, that.classe) && Objects.equals(status, that.status);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(movimentacaoId, idUsuario, data_movimentacao, valor, classe, status);
-    }
-
-    @Override
-    public String toString() {
-        return "Movimentacao{" +
-                "movimentacaoId=" + movimentacaoId +
-                ", idUsuario=" + idUsuario +
-                ", data_movimentacao=" + data_movimentacao +
-                ", valor=" + valor +
-                ", classe='" + classe + '\'' +
-                ", status='" + status + '\'' +
-                '}';
     }
 }

@@ -2,16 +2,24 @@ package br.fintrack.controllers;
 
 import br.fintrack.exception.InternalServerErrorException;
 import br.fintrack.exception.ResourceNotFoundException;
+
 import br.fintrack.models.Movimentacao;
+import br.fintrack.models.User;
+
 import br.fintrack.repositories.MovimentacaoRepository;
+import br.fintrack.repositories.UserRepository;
+
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import javax.validation.Valid;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,7 +29,8 @@ import java.util.Map;
 public class MovimentacaoController {
         @Autowired
         private MovimentacaoRepository movimentacaoRepository;
-
+        @Autowired
+        private UserRepository userRepository;
         @ApiResponses(value = {
                 @ApiResponse(code = 200, message = "Lista de movimentações retornada com sucesso")
         })
@@ -51,6 +60,9 @@ public class MovimentacaoController {
         @ResponseStatus(value = HttpStatus.CREATED)
         public Movimentacao createMovimentacao(@Valid @RequestBody Movimentacao movimentacao) throws InternalServerErrorException {
             try {
+                User usuarioTabela = userRepository.findById(movimentacao.getIdUsuario())
+                        .orElseThrow(() -> new ResourceNotFoundException("Usuario não encontrado."));
+                movimentacao.setUsuario(usuarioTabela);
                 return movimentacaoRepository.save(movimentacao);
             } catch (Exception e) {
                 throw new InternalServerErrorException("Falha ao criar movimentação.");
@@ -70,9 +82,6 @@ public class MovimentacaoController {
             Movimentacao movimentacao = movimentacaoRepository.findById(movimentacaoId)
                     .orElseThrow(() -> new ResourceNotFoundException("Movimentação não encontrado."));
 
-            if (movimentacaoDetails.getClasse() != null) {
-                movimentacao.setClasse(movimentacaoDetails.getClasse());
-            }
             if (movimentacaoDetails.getDataMovimentacao() != null) {
                 movimentacao.setDataMovimentacao(movimentacaoDetails.getDataMovimentacao());
             }
